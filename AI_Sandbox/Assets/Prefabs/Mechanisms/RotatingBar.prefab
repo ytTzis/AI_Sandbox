@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 5314201734558439020}
   - component: {fileID: 6801939156283551210}
   m_Layer: 0
-  m_Name: PF_RotatingBar
+  m_Name: RotatingBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

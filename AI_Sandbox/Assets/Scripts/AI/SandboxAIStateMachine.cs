@@ -11,7 +11,7 @@ namespace AISandbox.AI
         Stunned
     }
 
-    [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(NavMeshAgent), typeof(Rigidbody))]
     public class SandboxAIStateMachine : MonoBehaviour
     {
         [Header("References")]
@@ -30,18 +30,21 @@ namespace AISandbox.AI
         [SerializeField] private float knockbackStrength = 7f;
 
         private NavMeshAgent agent;
-        private Rigidbody body;
         private SandboxAIState currentState = SandboxAIState.Patrol;
         private int patrolIndex;
         private float stateTimer;
         private Vector3 knockbackVelocity;
+        private bool stunAfterCurrentHit;
 
         public SandboxAIState CurrentState => currentState;
 
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
-            body = GetComponent<Rigidbody>();
+            Rigidbody body = GetComponent<Rigidbody>();
+            body.isKinematic = true;
+            body.useGravity = false;
+            body.freezeRotation = true;
         }
 
         private void Start()
@@ -80,12 +83,8 @@ namespace AISandbox.AI
 
             knockbackVelocity = direction.normalized * knockbackStrength * forceMultiplier;
             stateTimer = hitDuration;
+            stunAfterCurrentHit = stunAfterHit;
             SetState(SandboxAIState.Hit);
-
-            if (stunAfterHit)
-            {
-                Invoke(nameof(EnterStunned), hitDuration);
-            }
         }
 
         private void TickPatrol()
@@ -127,13 +126,24 @@ namespace AISandbox.AI
 
         private void TickHit()
         {
-            transform.position += knockbackVelocity * Time.deltaTime;
+            if (agent.isOnNavMesh)
+            {
+                agent.Move(knockbackVelocity * Time.deltaTime);
+            }
+
             knockbackVelocity = Vector3.Lerp(knockbackVelocity, Vector3.zero, Time.deltaTime * 6f);
 
             stateTimer -= Time.deltaTime;
             if (stateTimer <= 0f)
             {
-                EnterStunned();
+                if (stunAfterCurrentHit)
+                {
+                    EnterStunned();
+                }
+                else
+                {
+                    ResumeNormalState();
+                }
             }
         }
 
@@ -142,14 +152,19 @@ namespace AISandbox.AI
             stateTimer -= Time.deltaTime;
             if (stateTimer <= 0f)
             {
-                if (CanSeeTarget(chaseRange))
-                {
-                    EnterChase();
-                }
-                else
-                {
-                    EnterPatrol();
-                }
+                ResumeNormalState();
+            }
+        }
+
+        private void ResumeNormalState()
+        {
+            if (CanSeeTarget(chaseRange))
+            {
+                EnterChase();
+            }
+            else
+            {
+                EnterPatrol();
             }
         }
 
@@ -188,11 +203,16 @@ namespace AISandbox.AI
             }
 
             currentState = nextState;
-            agent.enabled = nextState != SandboxAIState.Hit;
-
-            if (body != null)
+            if (agent.enabled && agent.isOnNavMesh)
             {
-                body.isKinematic = nextState != SandboxAIState.Hit;
+                bool stopNavigation = nextState == SandboxAIState.Hit
+                    || nextState == SandboxAIState.Stunned;
+                agent.isStopped = stopNavigation;
+
+                if (stopNavigation)
+                {
+                    agent.ResetPath();
+                }
             }
         }
     }

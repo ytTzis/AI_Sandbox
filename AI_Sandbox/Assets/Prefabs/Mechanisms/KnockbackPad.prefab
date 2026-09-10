@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7010256212425385556}
   - component: {fileID: 5938447206093612794}
   m_Layer: 0
-  m_Name: PF_KnockbackPad
+  m_Name: KnockbackPad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
