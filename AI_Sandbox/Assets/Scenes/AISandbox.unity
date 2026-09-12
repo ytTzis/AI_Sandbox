@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 33266163}
   - component: {fileID: 33266162}
   m_Layer: 0
-  m_Name: Wall_West
+  m_Name: WallWest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -892,7 +892,7 @@ GameObject:
   - component: {fileID: 349817643}
   - component: {fileID: 349817642}
   m_Layer: 0
-  m_Name: Wall_East
+  m_Name: WallEast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1102,7 +1102,7 @@ GameObject:
   - component: {fileID: 550073752}
   - component: {fileID: 550073751}
   m_Layer: 0
-  m_Name: WallRight
+  m_Name: CubeRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1422,7 +1422,7 @@ Transform:
   m_GameObject: {fileID: 855278578}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: 0.35, z: -11}
+  m_LocalPosition: {x: 10, y: 0.35, z: -11.81}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1512,7 +1512,7 @@ GameObject:
   - component: {fileID: 959755256}
   - component: {fileID: 959755255}
   m_Layer: 0
-  m_Name: Wall_North
+  m_Name: WallNorth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1722,7 +1722,7 @@ GameObject:
   - component: {fileID: 1256294559}
   - component: {fileID: 1256294558}
   m_Layer: 0
-  m_Name: WallLeft
+  m_Name: CubeLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2224,7 +2224,7 @@ GameObject:
   - component: {fileID: 1855939861}
   - component: {fileID: 1855939860}
   m_Layer: 0
-  m_Name: WallCenter
+  m_Name: CubeCenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2370,7 +2370,7 @@ GameObject:
   - component: {fileID: 2144825854}
   - component: {fileID: 2144825853}
   m_Layer: 0
-  m_Name: Wall_South
+  m_Name: WallSouth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

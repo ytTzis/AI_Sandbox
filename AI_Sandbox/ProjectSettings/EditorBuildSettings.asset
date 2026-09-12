@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/AISandbox.unity
+    guid: 06363a6e0b95c584c9b6a547fbb72937
   m_configObjects: {}

@@ -5,9 +5,9 @@ using UnityEngine;
 public static class Task3MechanismPrefabBuilder
 {
     public const string PrefabFolder = "Assets/Prefabs/Mechanisms";
-    public const string RotatingBarPath = PrefabFolder + "/PF_RotatingBar.prefab";
-    public const string KnockbackPadPath = PrefabFolder + "/PF_KnockbackPad.prefab";
-    public const string MovingWallPath = PrefabFolder + "/PF_MovingWall.prefab";
+    public const string RotatingBarPath = PrefabFolder + "/RotatingBar.prefab";
+    public const string KnockbackPadPath = PrefabFolder + "/KnockbackPad.prefab";
+    public const string MovingWallPath = PrefabFolder + "/MovingWall.prefab";
 
     [MenuItem("Tools/Task3/Create Mechanism Prefabs")]
     public static void CreateMechanismPrefabs()
@@ -57,7 +57,7 @@ public static class Task3MechanismPrefabBuilder
 
     private static void SaveRotatingBar(Material material)
     {
-        GameObject root = new GameObject("PF_RotatingBar");
+        GameObject root = new GameObject("RotatingBar");
         root.AddComponent<RotatingMechanism>();
 
         GameObject center = CreateCube(
@@ -84,7 +84,7 @@ public static class Task3MechanismPrefabBuilder
     private static void SaveKnockbackPad(Material material)
     {
         GameObject pad = CreateCube(
-            "PF_KnockbackPad",
+            "KnockbackPad",
             Vector3.zero,
             new Vector3(5f, 0.1f, 4f),
             material,
@@ -101,7 +101,7 @@ public static class Task3MechanismPrefabBuilder
     private static void SaveMovingWall(Material material)
     {
         GameObject wall = CreateCube(
-            "PF_MovingWall",
+            "MovingWall",
             Vector3.zero,
             new Vector3(1.2f, 2f, 6f),
             material,
