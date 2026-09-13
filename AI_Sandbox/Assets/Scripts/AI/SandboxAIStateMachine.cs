@@ -24,10 +24,7 @@ namespace AISandbox.AI
 
         [Header("State Timing")]
         [SerializeField] private float hitDuration = 0.45f;
-        [SerializeField] private float stunDuration = 1.4f;
-
-        [Header("Knockback")]
-        [SerializeField] private float knockbackStrength = 7f;
+        [SerializeField] private float stunDuration = 0.8f;
 
         private NavMeshAgent agent;
         private SandboxAIState currentState = SandboxAIState.Patrol;
@@ -35,8 +32,6 @@ namespace AISandbox.AI
         private float stateTimer;
         private Vector3 knockbackVelocity;
         private bool stunAfterCurrentHit;
-
-        public SandboxAIState CurrentState => currentState;
 
         private void Awake()
         {
@@ -71,17 +66,10 @@ namespace AISandbox.AI
             }
         }
 
-        internal void ApplyHit(Vector3 sourcePosition, float forceMultiplier = 1f, bool stunAfterHit = true)
+        internal void ApplyHit(Vector3 impactVelocity, bool stunAfterHit)
         {
-            Vector3 direction = transform.position - sourcePosition;
-            direction.y = 0f;
-
-            if (direction.sqrMagnitude < 0.01f)
-            {
-                direction = -transform.forward;
-            }
-
-            knockbackVelocity = direction.normalized * knockbackStrength * forceMultiplier;
+            impactVelocity.y = 0f;
+            knockbackVelocity = impactVelocity;
             stateTimer = hitDuration;
             stunAfterCurrentHit = stunAfterHit;
             SetState(SandboxAIState.Hit);
@@ -100,10 +88,15 @@ namespace AISandbox.AI
                 return;
             }
 
+            if (!CanNavigate())
+            {
+                return;
+            }
+
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + 0.2f)
             {
                 patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
-                agent.SetDestination(patrolPoints[patrolIndex].position);
+                TrySetDestination(patrolPoints[patrolIndex].position);
             }
         }
 
@@ -121,12 +114,12 @@ namespace AISandbox.AI
                 return;
             }
 
-            agent.SetDestination(target.position);
+            TrySetDestination(target.position);
         }
 
         private void TickHit()
         {
-            if (agent.isOnNavMesh)
+            if (CanNavigate())
             {
                 agent.Move(knockbackVelocity * Time.deltaTime);
             }
@@ -180,7 +173,7 @@ namespace AISandbox.AI
             if (patrolPoints != null && patrolPoints.Length > 0)
             {
                 patrolIndex = Mathf.Clamp(patrolIndex, 0, patrolPoints.Length - 1);
-                agent.SetDestination(patrolPoints[patrolIndex].position);
+                TrySetDestination(patrolPoints[patrolIndex].position);
             }
         }
 
@@ -203,7 +196,7 @@ namespace AISandbox.AI
             }
 
             currentState = nextState;
-            if (agent.enabled && agent.isOnNavMesh)
+            if (CanNavigate())
             {
                 bool stopNavigation = nextState == SandboxAIState.Hit
                     || nextState == SandboxAIState.Stunned;
@@ -213,6 +206,19 @@ namespace AISandbox.AI
                 {
                     agent.ResetPath();
                 }
+            }
+        }
+
+        private bool CanNavigate()
+        {
+            return agent != null && agent.enabled && agent.isOnNavMesh;
+        }
+
+        private void TrySetDestination(Vector3 destination)
+        {
+            if (CanNavigate())
+            {
+                agent.SetDestination(destination);
             }
         }
     }

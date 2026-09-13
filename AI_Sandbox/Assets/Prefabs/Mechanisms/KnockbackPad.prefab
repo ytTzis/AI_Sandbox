@@ -119,8 +119,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cec1bc6ca01bac4c9225c1369d24c8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMultiplier: 1
+  forceMultiplier: 1.5
   stunAfterHit: 1
+  fallbackImpactSpeed: 7
 --- !u!54 &5938447206093612794
 Rigidbody:
   m_ObjectHideFlags: 0
